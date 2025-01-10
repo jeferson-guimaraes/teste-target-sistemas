@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Percentual faturamento</title>
+</head>
+
+<body>
+
+  <!-- 
+    4) Dado o valor de faturamento mensal de uma distribuidora, detalhado por estado:
+      • SP – R$67.836,43
+      • RJ – R$36.678,66
+      • MG – R$29.229,88
+      • ES – R$27.165,48
+      • Outros – R$19.849,53
+
+    Escreva um programa na linguagem que desejar onde calcule o percentual de representação que cada estado teve dentro do valor total mensal da distribuidora.
+  -->
+
+  <h1>Percentual faturamento</h1>
+
+  <button id="verificar">Verificar</button>
+  <p id="percentuais"></p>
+
+  <script>
+    const faturamentos = [
+      { sigla: "SP", valor: "67.836,43"},
+      { sigla: "RJ", valor: "36.678,66" },
+      { sigla: "MG", valor: "29.229,88" },
+      { sigla: "ES", valor: "27.165,48" },
+      { sigla: "Outros", valor: "19.849,53" }
+    ];
+
+    /**
+     * Retorna o valor total do faturamento.
+     * 
+     * @returns {number} - O valor total do faturamento.
+     */
+    function calculaTotal(){
+      const valorTotalFaturamento = faturamentos.reduce((acumulador, item) => {
+        return acumulador + parseFloat(item.valor.replace(".", "").replace(",", "."));
+      }, 0);
+
+      return valorTotalFaturamento;
+    }
+
+    /**
+     * Retorna um array com o percentual de faturamento de cada estado.
+     * Cada item do array tem as propriedades "sigla", "valor" e "percentual".
+     * O valor de "percentual"   o percentual de faturamento do estado com
+     * respeito ao total de faturamento.
+     * 
+     * @returns {Object[]} - Um array com o percentual de faturamento de cada estado.
+     */
+    function obtemPercentual(){
+      const valorTotalFaturamento = calculaTotal();
+      const percentuais = faturamentos.map((item) => {
+        return { 
+          sigla: item.sigla,
+          valor: item.valor,
+          percentual: (parseFloat(item.valor.replace(".", "").replace(",", ".")) / valorTotalFaturamento * 100).toFixed(2)
+        } 
+      })
+
+      return percentuais;
+    }
+
+    document.getElementById("verificar").addEventListener("click", function () {
+      const percentualFaturamentos = obtemPercentual();
+
+      document.getElementById("percentuais").innerHTML = percentualFaturamentos.map((item) => {
+        return `${item.sigla} teve um faturamento de R$${item.valor} que representa <b>${item.percentual}%</b> do faturamento total.`;
+      }).join("<br>");
+    });
+  </script>
+</body>
+
+</html>
