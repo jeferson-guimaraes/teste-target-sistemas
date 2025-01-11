@@ -183,7 +183,10 @@
         return acumulador + item.valor;
       }, 0);
 
-      const media = (valorTotalFaturamento / valores.length);
+      const diasComFaturamento = valores.filter((item) => item.valor !== 0).length;
+
+      const media = (valorTotalFaturamento / diasComFaturamento);
+
       return media;
     }
 
